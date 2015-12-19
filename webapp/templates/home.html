@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block map_content %}
+
+    <div id="map"></div>
+
+    <div id="layer_selector" class="cartodb-infobox">
+      <ul>
+        <li data="all" class="selected">All Schools</li>
+        <li data="10">Under 10% Grad Rate</li>
+        <li data="30">Under 30% Grad Rate</li>
+        <li data="60">Under 60% Grad Rate</li>
+        <li data="80">Under 80% Grad Rate</li>
+        <li data="90">Under 90% Grad Rate</li>
+        <li data="91">Over 90% Grad Rate</li>
+        <li data="95">Over 95% Grad Rate</li>
+        <li data="99">Over 99% Grad Rate</li>
+
+      </ul>
+    </div>
+
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+    <script>
+      // create layer selector
+      function createSelector(layer) {
+        var sql = new cartodb.SQL({ user: 'kskk02' });
+        var query = "SELECT * FROM test_lat_long ";
+        var $options = $('#layer_selector li');
+
+        layer.setSQL(query);
+        
+        $options.click(function(e) {
+          // get the area of the selected layer
+          var $li = $(e.target);
+          var area = $li.attr('data');
+
+          // deselect all and select the clicked one
+          $options.removeClass('selected');
+          $li.addClass('selected');
+
+          // create query based on data from the layer
+          if(area !== 'all') {
+            if (!(area%10)) {
+              query = "SELECT * FROM test_lat_long WHERE clean_grad_rate <" + area;
+              console.log(query);
+            }
+            else {
+              query = "SELECT * FROM test_lat_long WHERE clean_grad_rate >" + area;
+              console.log(query);              
+            }
+          }
+
+          // change the query in the layer to update the map
+          console.log('current query:', query);
+          layer.setSQL(query);
+        });
+      }
+
+      function main() {
+        console.log('we are loaded now...', $('#map'))
+        cartodb.createVis('map', 'https://kskk02.cartodb.com/api/v2/viz/ad5c590a-8adf-11e5-bbde-0e674067d321/viz.json', {
+          tiles_loader: true,
+          center_lat: 39.5,
+          center_lon: -98,
+          zoom: 3
+        })
+        .done(function(vis, layers) {
+          // layer 0 is the base layer, layer 1 is cartodb layer
+          var subLayer = layers[1].getSubLayer(0);
+          createSelector(subLayer);
+        })
+        .error(function(err) {
+          console.log(err);
+        });
+      }
+
+      window.onload = main;
+    </script>
+  
+
+
+{% endblock %}
