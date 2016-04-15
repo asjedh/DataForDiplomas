@@ -1,7 +1,7 @@
 # Data For Diplomas
-This project won 3rd place in AT&T’s Data for Diplomas data science competition. Please refer to the competition website for information: datafordiplomas.devpost.com
+This project won 3rd place in AT&T’s Data for Diplomas data science competition. Please refer to the competition website for information: datafordiplomas.devpost.com. Our final submission website is at: www.datafordiploma.com.
 
-Our final submission website is at: www.datafordiploma.com
+I owned the entire data analysis including the data processing, dataset merging, exploration, feature selection, and model-building. The files I worked on are in the code directory.
 
 # Competition Summary
 The purpose of this competition was to predict high school graduation rates and identify actionable levers that policymakes can pull to increase graduation rates. Grading was done according to three different metrics:
@@ -23,3 +23,4 @@ We had several actionable insights from our model:
 
 3) Household stability is a more important predictor of graduation rates than economic wellbeing. Beyond school programming, school officials and policy-makers should also offer services to help stabilize households and communities.
 
+**Note: To see the full analysis, please see the iPython Notebook (code/Analysis.ipynb)**
